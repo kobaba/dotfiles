@@ -1,21 +1,47 @@
 "----------------------------------------------------------------
+" Vundle
+"----------------------------------------------------------------
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" plugins
+Bundle 'gmarik/vundle'
+Bundle 'Shougo/neocomplcache'
+Bundle 'thinca/vim-quickrun'
+Bundle 'vim-scripts/vtreeexplorer'
+
+filetype plugin indent on
+
+"----------------------------------------------------------------
 " 基本設定
 "----------------------------------------------------------------
 colorscheme desert
 
 set nobackup
-set number
+set noswapfile
+set hidden
 set expandtab
 set tabstop=4
 set shiftwidth=4
-set incsearch
-set showmatch
+set backspace=indent,eol,start
+set showcmd
+set showmode
 set autoindent
-set smartindent
+"set smartindent
+set nosmartindent     " 改行時の自動コメントアウトを無効
+set formatoptions=rq  " 'r': Insertモード時は自動コメントアウトを有効に
+set incsearch
 
 "----------------------------------------------------------------
 " quote from http://d.hatena.ne.jp/yuroyoro/20101104/1288879591
 "----------------------------------------------------------------
+" OSのクリップボードを使用する
+set clipboard+=unnamed
+"ヤンクした文字は、システムのクリップボードに入れる"
+set clipboard=unnamed
+
 " カーソル行をハイライト
 set cursorline
 " カレントウィンドウにのみ罫線を引く
@@ -44,28 +70,40 @@ autocmd BufWritePre * :%s/\s\+$//ge
 "nnoremap <C-h> ;<C-h>j
 
 "----------------------------------------------------------------
+" Status Line
+"----------------------------------------------------------------
+set laststatus=2
+set ruler
+
+"----------------------------------------------------------------
+" Apperance
+"----------------------------------------------------------------
+set showmatch
+set number
+"set list
+set cursorline
+
+"----------------------------------------------------------------
 " pathgen.vim
 "----------------------------------------------------------------
 " pathogenでftdetectなどをloadさせるために一度ファイルタイプ判定をoff
-filetype off
-" pathogen.vimによってbundle配下のpluginをpathに加える
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-set helpfile=$VIMRUNTIME/doc/help.txt
-" ファイルタイプ判定をon
-filetype plugin on
+"filetype off
+"" pathogen.vimによってbundle配下のpluginをpathに加える
+"call pathogen#runtime_append_all_bundles()
+"call pathogen#helptags()
+"set helpfile=$VIMRUNTIME/doc/help.txt
+"" ファイルタイプ判定をon
+"filetype plugin on
 
 "----------------------------------------------------------------
 " surround.vim
 "----------------------------------------------------------------
 " s, ssで選択範囲を指定文字でくくる
-nmap s <Plug>Ysurround
-nmap ss <Plug>Yssurround
+"nmap s <Plug>Ysurround
+"nmap ss <Plug>Yssurround
 
-
-
-
-
-
-
-
+"----------------------------------------------------------------
+" VTreeExplorer
+"----------------------------------------------------------------
+let g:treeExplVertical=1
+let g:treeExplWinSize=30
