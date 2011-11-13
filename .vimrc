@@ -8,6 +8,7 @@ call vundle#rc()
 
 """ on github
 Bundle 'gmarik/vundle'
+Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'tpope/vim-surround'
 Bundle 'thinca/vim-quickrun'
@@ -74,10 +75,10 @@ nmap <ESC><ESC> :nohlsearch<CR>
 "let g:indent_guides_guide_size = 1
 
 " errormarker.vim [Vimテクニックバイブル P.202]
-"let g:errormarker_errortext    = '!!'
-"let g:errormarker_warningtext  = '??'
-"let g:errormarker_errorgroup   = 'Error'
-"let g:errormarker_warninggroup = 'Todo'
+let g:errormarker_errortext    = '!!'
+let g:errormarker_warningtext  = '??'
+let g:errormarker_errorgroup   = 'Error'
+let g:errormarker_warninggroup = 'Todo'
 "if has('win32') || has('win64')
 "    let g:errormarker_erroricon   = expand('~/.vim/signs/err.bmp')
 "    let g:errormarker_warningicon = expand('~/.vim/signs/warn.bmp')
@@ -175,6 +176,18 @@ augroup templateload
     autocmd BufNewFile *.pl  0r ~/.vim/template/skeleton.pl
     autocmd BufNewFile *.pm  0r ~/.vim/template/skeleton.pm
 augroup END
+
+"----------------------------------------------------------------
+" quickrun
+"----------------------------------------------------------------
+augroup QuickRunUnitTest
+  autocmd!
+  autocmd BufWinEnter,BufNewFile *Test.php set filetype=php.unit
+  autocmd BufWinEnter,BufNewFile *.t set filetype=perl.unit
+augroup END
+let g:quickrun_config = {}
+let g:quickrun_config['php.unit'] = {'command': 'phpunit'}
+let g:quickrun_config['perl.unit'] = {'command': 'prove'}
 
 "----------------------------------------------------------------
 " Functions
