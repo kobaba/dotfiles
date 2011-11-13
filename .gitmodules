@@ -10,6 +10,6 @@
 [submodule ".vim/bundle/vtreeexplorer"]
 	path = .vim/bundle/vtreeexplorer
 	url = git://github.com/vim-scripts/vtreeexplorer.git
-[submodule "/Users/koba/dotfiles/.vim/bundle/vundle"]
-	path = /Users/koba/dotfiles/.vim/bundle/vundle
+[submodule ".vim/bundle/vundle"]
+	path = .vim/bundle/vundle
 	url = http://github.com/gmarik/vundle.git
