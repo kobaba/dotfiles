@@ -44,11 +44,46 @@ set backspace=indent,eol,start
 set showcmd
 set showmode
 set autoindent
-"set smartindent
 set nosmartindent     " 改行時の自動コメントアウトを無効
 set formatoptions=rq  " 'r': Insertモード時は自動コメントアウトを有効に
-set formatoptions-=ro
+autocmd VimEnter,WinEnter * set formatoptions-=o
 set incsearch
+
+" 自動折り返し
+"set formatoptions+=mM
+"set textwidth=120
+
+"----------------------------------------------------------------
+" Apperance
+"----------------------------------------------------------------
+set showmatch
+set number
+"set list
+"set cursorline
+
+set splitbelow
+set splitright
+
+syntax on
+set termencoding=utf-8
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings+=utf-8,iso-2022-jp,euc-jp,ucs2le,ucs-2,cp932
+
+"----------------------------------------------------------------
+" Search
+"----------------------------------------------------------------
+set ignorecase
+set smartcase
+set hlsearch
+set wrapscan
+
+"----------------------------------------------------------------
+" ステータスライン
+"----------------------------------------------------------------
+set laststatus=2
+set ruler
+"set statusline=
 
 "----------------------------------------------------------------
 " ハイライト
@@ -95,7 +130,6 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " 行末以降, 文字のない箇所もカーソル移動可能に
 set virtualedit=block
 
-
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 " 保存時にtabをスペースに変換する
@@ -129,37 +163,38 @@ if has("win32")
 endif
 
 "----------------------------------------------------------------
-" Status Line
+" タブ
 "----------------------------------------------------------------
-set laststatus=2
-set ruler
+set showtabline=1
+map th :tabfirst<CR>
+map tj :tabprev<CR>
+map tk :tabnext<CR>
+map tl :tablast<CR>
+map tt :tabedit<CR>
+map tn :tabnext<CR>
+map tm :tabm<CR>
+
+nmap <C-n> :tabnew<cr>
+imap <C-n> <ESC>:tabnew<cr>
 
 "----------------------------------------------------------------
-" Apperance
+" neocomplecache
 "----------------------------------------------------------------
-set showmatch
-set number
-"set list
-set cursorline
-
-"----------------------------------------------------------------
-" pathgen.vim
-"----------------------------------------------------------------
-" pathogenでftdetectなどをloadさせるために一度ファイルタイプ判定をoff
-"filetype off
-"" pathogen.vimによってbundle配下のpluginをpathに加える
-"call pathogen#runtime_append_all_bundles()
-"call pathogen#helptags()
-"set helpfile=$VIMRUNTIME/doc/help.txt
-"" ファイルタイプ判定をon
-"filetype plugin on
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+"let g:neocomplcache_dictionary_filetype_lists = {}
+"let g:neocomplcache_snippets_dir = ''
 
 "----------------------------------------------------------------
 " surround.vim
 "----------------------------------------------------------------
 " s, ssで選択範囲を指定文字でくくる
-"nmap s <Plug>Ysurround
-"nmap ss <Plug>Yssurround
+nmap s <Plug>Ysurround
+nmap ss <Plug>Yssurround
 
 "----------------------------------------------------------------
 " VTreeExplorer
@@ -178,6 +213,16 @@ augroup templateload
 augroup END
 
 "----------------------------------------------------------------
+" phpdoc comment
+"----------------------------------------------------------------
+" todo
+
+"----------------------------------------------------------------
+" ctags
+"----------------------------------------------------------------
+" todo
+
+"----------------------------------------------------------------
 " quickrun
 "----------------------------------------------------------------
 augroup QuickRunUnitTest
@@ -186,8 +231,10 @@ augroup QuickRunUnitTest
   autocmd BufWinEnter,BufNewFile *.t set filetype=perl.unit
 augroup END
 let g:quickrun_config = {}
+let b:quickrun_config = {'outputter/buffer/split': 10}
 let g:quickrun_config['php.unit'] = {'command': 'phpunit'}
 let g:quickrun_config['perl.unit'] = {'command': 'prove'}
+let g:quickrun_config['js'] = {'command': 'node'}
 
 "----------------------------------------------------------------
 " Functions
