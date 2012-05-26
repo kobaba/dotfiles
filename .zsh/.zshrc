@@ -31,6 +31,7 @@ alias la="ls -la"
 alias du="du -h"
 alias df="df -h"
 alias rm="rm -i"
+alias sc="screen"
 
 # -------------------------------------------------------------------
 # PROMPT
