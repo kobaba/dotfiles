@@ -1,31 +1,36 @@
 "----------------------------------------------------------------
 " Vundle
 "----------------------------------------------------------------
+let $GIT_SSL_NO_VERIFY = 'true'
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
+let g:vundle_default_git_proto='git'
 call vundle#rc()
 
-""" on github
+""" GitHub
 Bundle 'gmarik/vundle'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
 Bundle 'thinca/vim-quickrun'
 Bundle 'vim-scripts/vtreeexplorer'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'koron/chalice'
 Bundle 'thinca/vim-ref'
+"Bundle 'thinca/vim-javascript'
+Bundle 'tsaleh/vim-matchit.git'
 
-""" on www.vim.org
+""" www.vim.org
 Bundle 'yanktmp.vim'
-Bundle 'errormarker.vim'
-" sudo権限でファイルを保存する
+"Bundle 'errormarker.vim'
+"Bundle 'JavaScript.vim'
 Bundle 'sudo.vim'
-" ディレクトリ内のファイルを再帰的に比較する
-Bundle 'DirDiff.vim'
+"Bundle 'DirDiff.vim'
+"Bundle 'php-doc.vim'
 
-""" on other git repos
+""" Other Git Repos
 
 filetype plugin indent on
 
@@ -53,9 +58,7 @@ set incsearch
 "set formatoptions+=mM
 "set textwidth=120
 
-"----------------------------------------------------------------
-" Apperance
-"----------------------------------------------------------------
+"" Apperance
 set showmatch
 set number
 "set list
@@ -71,7 +74,7 @@ set fileencoding=utf-8
 set fileencodings+=utf-8,iso-2022-jp,euc-jp,ucs2le,ucs-2,cp932
 
 "----------------------------------------------------------------
-" Search
+" 検索
 "----------------------------------------------------------------
 set ignorecase
 set smartcase
@@ -90,6 +93,7 @@ set ruler
 "----------------------------------------------------------------
 " カーソル行をハイライト
 set cursorline
+
 " カレントウィンドウにのみ罫線を引く
 augroup cch
   autocmd! cch
@@ -104,6 +108,11 @@ highlight CursorLine ctermbg=black guibg=black
 " Escの2回押しでハイライト消去
 nmap <ESC><ESC> :nohlsearch<CR>
 
+" タブをハイライト
+highlight Tabspace ctermbg=red guibg=red
+match Tabspace /\t\+/
+autocmd WinEnter * match Tabspace /\t\+/
+
 " indent-guides: インデントをハイライト
 "let g:indent_guides_enable_on_vim_startup = 1
 "let g:indent_guides_color_change_percent = 20
@@ -114,13 +123,8 @@ let g:errormarker_errortext    = '!!'
 let g:errormarker_warningtext  = '??'
 let g:errormarker_errorgroup   = 'Error'
 let g:errormarker_warninggroup = 'Todo'
-"if has('win32') || has('win64')
-"    let g:errormarker_erroricon   = expand('~/.vim/signs/err.bmp')
-"    let g:errormarker_warningicon = expand('~/.vim/signs/warn.bmp')
-"else
-"    let g:errormarker_erroricon   = expand('~/.vim/signs/err.bmp')
-"    let g:errormarker_warningicon = expand('~/.vim/signs/err.png')
-"endif
+"let g:errormarker_erroricon   = expand('~/.vim/signs/err.bmp')
+"let g:errormarker_warningicon = expand('~/.vim/signs/err.png')
 
 "----------------------------------------------------------------
 " Visualモード
@@ -158,12 +162,10 @@ nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 map <silent> sy :call YanktmpYank()<CR>
 map <silent> sp :call YanktmpPaste_p()<CR>
 map <silent> sP :call YanktmpPaste_P()<CR>
-if has("win32")
-    let g:yanktmp_file = $TEMP . '/vimyanktmp'
-endif
+let g:yanktmp_file = $HOME . '/vimyanktmp'
 
 "----------------------------------------------------------------
-" タブ
+" Tab
 "----------------------------------------------------------------
 set showtabline=1
 map th :tabfirst<CR>
@@ -186,11 +188,28 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-"let g:neocomplcache_dictionary_filetype_lists = {}
-"let g:neocomplcache_snippets_dir = ''
+let g:neocomplcache_snippets_dir = '~/.vim/snippets'
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'php'   : $DOCVIM.'/dict/php53.dict',
+    \ 'perl'  : $DOCVIM.'/dict/perl.dict',
+    \ 'ruby'  : $DOCVIM.'/dict/ruby.dict',
+    \ 'javascript' : $DOCVIM.'/dict/javascript.dict',
+    \ 'c'     : $DOCVIM.'/dict/c.dict',
+    \ 'html'  : $DOCVIM.'/dict/javascript.dict' }
+
+"----------------------------------------------------------------
+" ctags
+"----------------------------------------------------------------
+autocmd FileType php        :set tags+=~/.tags/php.tags
+autocmd FileType c          :set tags+=~/.tags/c.tags
+autocmd FileType perl,cgi   :set tags+=~/.tags/perl.tags
 
 "----------------------------------------------------------------
 " surround.vim
+"  note:
+"   vmode + S" .. 選択範囲を"で囲む
+"   ss"        .. カーソル行を"で囲む
+"   sw"        .. カーソル位置の単語を"で囲む
 "----------------------------------------------------------------
 " s, ssで選択範囲を指定文字でくくる
 nmap s <Plug>Ysurround
@@ -213,34 +232,51 @@ augroup templateload
 augroup END
 
 "----------------------------------------------------------------
-" phpdoc comment
+" PHPDoc Comment
 "----------------------------------------------------------------
-" todo
+if filereadable(expand('~/.vim/local/php-doc.vim'))
+    source ~/.vim/local/php-doc.vim
+    inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
+    nnoremap <C-P> :call PhpDocSingle()<CR>
+    vnoremap <C-P> :call PhpDocRange()<CR>
+endif
 
 "----------------------------------------------------------------
-" ctags
+" quickrun : https://github.com/thinca/vim-quickrun/blob/master/doc/quickrun.jax
 "----------------------------------------------------------------
-" todo
-
-"----------------------------------------------------------------
-" quickrun
-"----------------------------------------------------------------
-augroup QuickRunUnitTest
-  autocmd!
-  autocmd BufWinEnter,BufNewFile *Test.php set filetype=php.unit
-  autocmd BufWinEnter,BufNewFile *.t set filetype=perl.unit
-augroup END
 let g:quickrun_config = {}
 let b:quickrun_config = {'outputter/buffer/split': 10}
+
+augroup QuickRunUnitTest
+  autocmd!
+  autocmd BufWinEnter,BufNewFile *[tT]est.php set filetype=php.unit
+  autocmd BufWinEnter,BufNewFile *.t set filetype=perl.unit
+  autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.spec
+  "autocmd BufWinEnter,BufNewFile *.js set filetype=js.unit
+augroup END
 let g:quickrun_config['php.unit'] = {'command': 'phpunit'}
-let g:quickrun_config['perl.unit'] = {'command': 'prove'}
-let g:quickrun_config['js'] = {'command': 'node'}
+let g:quickrun_config['perl.unit'] = {'command': 'perl'}
+"let g:quickrun_config['perl.unit'] = {'command': 'prove'}
+let g:quickrun_config['ruby.spec'] = {'command': 'rspec', 'cmdopt': '-c'}
+"let g:quickrun_config['js'] = {'command': 'node'}
+
+"----------------------------------------------------------------
+" Compiler
+"----------------------------------------------------------------
+autocmd FileType perl,cgi :compiler perl
+autocmd BufWritePost *.php !php -l %
+
+"----------------------------------------------------------------
+" HTML & CSS
+"----------------------------------------------------------------
+" インデントの無効化 https://sites.google.com/site/vimdocja/filetype-html#:filetype-indent-off
+"autocmd FileType html :set noautoindent noindent nosmartindent indentexpr=
+autocmd FileType html :set tabstop=4 shiftwidth=4 softtabstop=4
 
 "----------------------------------------------------------------
 " Functions
 "----------------------------------------------------------------
-" URLエンコード, デコード [alice.vim] [Vimテクニックバイブル P.164]
-" - TODO: 日本語だとうまくいかない
+" URLエンコード, デコード [alice.vim] [Vimテクニックバイブル P.164] - TODO: 日本語だとうまくいかない
 function s:URLEncode()
     let l:line = getline('.')
     let l:encoded = AL_urlencode(l:line)
@@ -255,6 +291,15 @@ command! -nargs=0 -range URLEncode :<line1>,<line2>call <SID>URLEncode()
 command! -nargs=0 -range URLDecode :<line1>,<line2>call <SID>URLDecode()
 
 "----------------------------------------------------------------
+" Encoding
+"----------------------------------------------------------------
+if filereadable(expand('~/.vim/local/recognize_charcode.vim'))
+    source ~/.vim/local/recognize_charcode.vim
+endif
+
+"----------------------------------------------------------------
+" Load Local Setting
+"----------------------------------------------------------------
 if filereadable(expand('~/.vimrc.local'))
     source ~/.vimrc.local
 endif
@@ -265,7 +310,8 @@ endif
 "   :CdCurrent
 " - 全角<->半角 (KaoriYa Patch, or hz_ja.vim)
 "   :Zenkaku :Hankaku
-"----------------------------------------------------------------
+"
 " 参考サイト:
+" - http://sites.google.com/site/vimdocja/
 " - http://d.hatena.ne.jp/yuroyoro/20101104/1288879591
 "----------------------------------------------------------------

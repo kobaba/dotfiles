@@ -3,13 +3,10 @@
 # -------------------------------------------------------------------
 # 補完機能を有効にする
 autoload -U compinit
-compinit
+compinit -d /tmp/$USER.zcompdump
 # プロンプトのカラー表示用関数
 autoload -U colors
 colors
-# 先読み補完を有効にする
-#autoload -U predict-on
-#predict-on
 
 # -------------------------------------------------------------------
 # Environment variable
@@ -17,13 +14,8 @@ colors
 export LANG=ja_JP.UTF-8
 export PATH=/usr/local/bin:${PATH}:/sbin:/usr/sbin:${HOME}/bin
 
-# MacVim
-export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
-alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-
 # -------------------------------------------------------------------
-# alias
+# Alias
 # -------------------------------------------------------------------
 alias ls="ls -F"
 alias ll="ls -l"
@@ -33,11 +25,34 @@ alias df="df -h"
 alias rm="rm -i"
 alias sc="screen"
 
+# svn
+alias svnst="svn status"
+alias svnup="svn update"
+alias svnadd="svn add"
+alias svncp="svn copy"
+alias svnrev="svn revert"
+alias svnci="svn commit"
+alias svndiff="svn diff"
+alias svnaddall="svn add --force"
+alias svnrevall="svn revert --recursive"
+
+# git
+alias gitst="git st"
+
+# tmux
+#alias tmux='tmuxx'
+alias tmls="tmux list-sessions"
+alias tmat="tmux attatch"
+alias tmnew="tmux new-session"
+alias tmrn="tmux rename-session -t"
+alias tmkill="tmux kill-session -t"
+alias tmkillall="tmux kill-server"
+
 # -------------------------------------------------------------------
 # PROMPT
 # -------------------------------------------------------------------
 #PROMPT="%{${fg[yellow]}%}%n@%m[%~]%#%{${reset_color}%} "
-PROMPT="%{${fg[yellow]}%}%n@%m[%~]$%{${fg[default]}%} "
+PROMPT="%{${fg[red]}%}%n@%m[%~]$%{${fg[default]}%} "
 #PROMPT2=
 #PROMPT3=
 #PROMPT4
@@ -56,7 +71,6 @@ setopt hist_ignore_space     # 先頭がスペースならば無視する
 #setopt hist_expand           # ?
 setopt share_history         # ヒストリーを複数zshプロセス間で共有する
 
-# etc
 setopt auto_pushd            # ディレクトリの移動履歴一覧を"cd [TAB]"で表示
 setopt auto_cd               # ディレクトリ名でcdが可能になる
 setopt correct               # コマンド入力ミスを指摘してくれる
@@ -69,25 +83,16 @@ setopt extended_glob         # "#","~","^"を正規表現として扱う
 setopt rm_star_silent        # "rm * "を実行する前に確認
 
 # -------------------------------------------------------------------
-# Java
-# -------------------------------------------------------------------
-# JDK
-#export JAVA_HOME=/usr/java/jdk
-#export PATH=$PATH:$JAVA_HOME/bin
-#export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
-# Tomcat
-#export TOMCAT_HOME=/usr/local/server/tomcat
-#export CATALINA_HOME=/usr/local/server/tomcat
-#export CLASSPATH=$CLASSPATH:$CATALINA_HOME/common/lib:$CATALINA_HOME/common/lib/servlet-api.jar
-
-# -------------------------------------------------------------------
 # CVS
 # -------------------------------------------------------------------
-#export CVSROOT=$HOME/var/cvs
+#export CVSROOT=
+#export CVS_RSH='ssh'
+#export CVSEDITOR='vim'
 
 # -------------------------------------------------------------------
 # SVN
 # -------------------------------------------------------------------
+export SVN_EDITOR='vim'
 
 # -------------------------------------------------------------------
 # Git
@@ -96,17 +101,23 @@ export PATH=$PATH:/usr/local/git/bin
 export MANPATH=$MANPATH:/usr/local/git/man
 
 # -------------------------------------------------------------------
-# MacPorts -> Homebrewに移行したので不要
+# Java, Tomcat
 # -------------------------------------------------------------------
-#export PATH=$PATH:/opt/local/bin:/opt/local/sbin/
-#export MANPATH=$MANPATH:/opt/local/man
-
-# tmux
-#alias tmux='tmuxx'
-
+#export JAVA_HOME=/usr/java/jdk
+#export PATH=$PATH:$JAVA_HOME/bin
+#export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+#export TOMCAT_HOME=/usr/local/server/tomcat
+#export CATALINA_HOME=/usr/local/server/tomcat
+#export CLASSPATH=$CLASSPATH:$CATALINA_HOME/common/lib:$CATALINA_HOME/common/lib/servlet-api.jar
 
 # -------------------------------------------------------------------
-# rvm
+# Python
+# -------------------------------------------------------------------
+#export PYTHONHOME=
+#export PYTHONPATH=
+
+# -------------------------------------------------------------------
+# Rvm
 # -------------------------------------------------------------------
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 #[ -s $HOME/.rvm/scripts/rvm ] && source $HOME/.rvm/scripts/rvm

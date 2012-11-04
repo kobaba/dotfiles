@@ -1,0 +1,14 @@
+PROMPT="%{${fg[yellow]}%}%n@%m[%~]$%{${fg[default]}%} "
+
+# -------------------------------------------------------------------
+# MacVim
+# -------------------------------------------------------------------
+export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
+alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+
+# -------------------------------------------------------------------
+# MacPorts -> Homebrewに移行したので不要
+# -------------------------------------------------------------------
+#export PATH=$PATH:/opt/local/bin:/opt/local/sbin/
+#export MANPATH=$MANPATH:/opt/local/man
