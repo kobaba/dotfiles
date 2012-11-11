@@ -15,20 +15,20 @@ Bundle 'Shougo/neocomplcache'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 Bundle 'thinca/vim-quickrun'
-Bundle 'vim-scripts/vtreeexplorer'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'koron/chalice'
 Bundle 'thinca/vim-ref'
 "Bundle 'thinca/vim-javascript'
 Bundle 'tsaleh/vim-matchit.git'
+Bundle 'vim-scripts/yanktmp.vim'
+Bundle 'vim-scripts/sudo.vim'
+Bundle 'vim-scripts/vtreeexplorer'
+Bundle 'vim-scripts/PDV--phpDocumentor-for-Vim'
 
 """ www.vim.org
-Bundle 'yanktmp.vim'
 "Bundle 'errormarker.vim'
 "Bundle 'JavaScript.vim'
-Bundle 'sudo.vim'
 "Bundle 'DirDiff.vim'
-"Bundle 'php-doc.vim'
 
 """ Other Git Repos
 
@@ -234,12 +234,9 @@ augroup END
 "----------------------------------------------------------------
 " PHPDoc Comment
 "----------------------------------------------------------------
-if filereadable(expand('~/.vim/local/php-doc.vim'))
-    source ~/.vim/local/php-doc.vim
-    inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
-    nnoremap <C-P> :call PhpDocSingle()<CR>
-    vnoremap <C-P> :call PhpDocRange()<CR>
-endif
+inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
+nnoremap <C-P> :call PhpDocSingle()<CR>
+vnoremap <C-P> :call PhpDocRange()<CR>
 
 "----------------------------------------------------------------
 " quickrun : https://github.com/thinca/vim-quickrun/blob/master/doc/quickrun.jax
