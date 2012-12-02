@@ -12,6 +12,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neosnippet'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 Bundle 'thinca/vim-quickrun'
@@ -24,6 +25,7 @@ Bundle 'vim-scripts/yanktmp.vim'
 Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/vtreeexplorer'
 Bundle 'vim-scripts/PDV--phpDocumentor-for-Vim'
+Bundle 'honza/snipmate-snippets'
 
 """ www.vim.org
 "Bundle 'errormarker.vim'
@@ -196,6 +198,27 @@ let g:neocomplcache_dictionary_filetype_lists = {
     \ 'javascript' : $DOCVIM.'/dict/javascript.dict',
     \ 'c'     : $DOCVIM.'/dict/c.dict',
     \ 'html'  : $DOCVIM.'/dict/javascript.dict' }
+
+"----------------------------------------------------------------
+" snippets
+"----------------------------------------------------------------
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" honza/snipmate-snippets
+if isdirectory(expand('~/.vim/bundle/snipmate-snippets/snippets'))
+    let g:neosnippet#snippets_directory='~/.vim/bundle/snipmate-snippets/snippets'
+endif
 
 "----------------------------------------------------------------
 " ctags
